@@ -112,7 +112,7 @@
             setTimeout(function() {
 
                 $('#subbscribe').css('display', 'block');
-                $('#subbscribe').css('width', $('.subb-hidden').width() +100);
+                $('#subbscribe').css('width', (($('.subb-hidden').width()>0)?$('.subb-hidden').width():300) +100);
                 $('#subbscribe').addClass('animated slideInRight');
 
             }, settings.delay * 1000);
