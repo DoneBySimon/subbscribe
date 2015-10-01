@@ -6,28 +6,33 @@
 
 (function($) {
 
-    $.fn.subbscribe = function( options ) {
+    $.fn.subbscribe = function(options) {
 
         var obj = this;
 
         // Default settings
         var settings = $.extend({
 
-	    list	 : 'MailChimp',
-            url           : '',
-            title         : 'Never miss a post!',
-            text          : 'Get our latest posts and announcements in your inbox. You won\'t regret it!',
-            name          : 'Subbscribe',
-            color         : '#ee6262',
-            thumbnail     : 'https://s3-ap-southeast-2.amazonaws.com/subbscribe/img/avatar.png',
-            emailonly	    : false,
-            cm_mail_field : '',
-            delay         : 0,
-
-	}, options);
+            list: 'MailChimp',
+            url: '',
+            title: 'Never miss a post!',
+            text: 'Get our latest posts and announcements in your inbox. You won\'t regret it!',
+            name: 'Subbscribe Plus',
+            color: '#ee6262',
+            thumbnail: 'https://s3-ap-southeast-2.amazonaws.com/subbscribe/img/avatar.png',
+            emailonly: false,
+            send_to_signup: false,
+            cm_mail_field: '',
+            button: 'Subscribe',
+            thanks: 'Thanks! Check your email for confirmation.',
+            error: 'Oops! Check your details and try again.',
+            no_nonsense: false,
+            footer: true,
+            onClose:function(){}
+        }, options);
 
         // Make sure a URL has been passed through
-        if ( settings.url == '' ) {
+        if (settings.url == '') {
 
             console.log('Subbscribe Error: You must provide a valid MailChimp form URL.');
             return;
@@ -35,68 +40,82 @@
         };
 
         //make sure the cm_mail_field is set when using Campaign Monitor
-        if( settings.list === 'CampaignMonitor' && !settings.cm_mail_field.length ){
+        if (settings.list === 'CampaignMonitor' && !settings.cm_mail_field.length) {
 
             console.log('You must provide the mail input name. Found in the form code from Campaign Monitor');
             return;
 
         }
 
-	var _name 	= '';
-	var _email 	= '';
-	var _url 	= '';
+        var _name = '';
+        var _email = '';
+        var _url = '';
 
-	// Make sure list is either set to MailChimp or CampaignMonitor
-	// Change field names if yours don’t match
+        // Make sure list is either set to MailChimp or CampaignMonitor
+        // Change field names if yours don’t match
 
-	if( settings.list == 'MailChimp' ) {
+        if (settings.list == 'MailChimp') {
 
-		_name 	= 'NAME';
-		_email 	= 'EMAIL';
-		_action	= settings.url.replace('/post?', '/post-json?').concat('&c=?');
+            _name = 'NAME';
+            _email = 'EMAIL';
+            _action = settings.url.replace('/post?', '/post-json?').concat('&c=?');
 
-	}
-	else if ( settings.list == 'CampaignMonitor' ) {
+        } else if (settings.list == 'CampaignMonitor') {
 
-		_name 	= 'cm-name';
-		_email 	= settings.cm_mail_field;
-		_action	= settings.url  + "?callback=?";
+            _name = 'cm-name';
+            _email = settings.cm_mail_field;
+            _action = settings.url + "?callback=?";
 
-	}
-	else {
+        } else {
 
-		console.log('Subbscribe Error: list value must be set to MailChimp or CampaignMonitor');
-		return;
+            console.log('Subbscribe Error: list value must be set to MailChimp or CampaignMonitor');
+            return;
 
-	}
+        }
 
-	// Separate the input fields from the HTML
-	// if emailonly is set, nameInput should be blank
+        // Separate the input fields from the HTML
+        // if emailonly is set, nameInput should be blank
 
-	var nameInput 	= '';
-	var emailInput 	= '<input type="email" name="' + _email + '" id="subb-EMAIL" placeholder="Email Address" />';
+        var nameInput = '';
+        var emailInput = '<input type="email" name="' + _email + '" id="subb-EMAIL" placeholder="Email Address" />';
 
-	if( !settings.emailonly ) {
+        if (!settings.emailonly) {
 
-		nameInput = ' <input type="text" name="' + _name + '" id="subb-NAME" placeholder="Name" />';
+            nameInput = ' <input type="text" name="' + _name + '" id="subb-NAME" placeholder="Name" />';
 
-	}
+        }
 
 
-	// HTML
-        var html = '<div id="subbscribe" style="display: none"><div class="subb-title">' + settings.title + ' <img class="close-x" src="https://s3-ap-southeast-2.amazonaws.com/subbscribe/img/close.svg" />  </div> <div class="subb-body"> <div class="subb-hidden"> <div class="subb-thumbnail"> <img style="width: 40px; height: 40px;" src="' + settings.thumbnail + '" /> </div> <div class="subb-hidden"> <div class="subb-site"> &nbsp;' + settings.name + ' </div> <button class="subb-button show-form">Subscribe</button> </div> </div> <div class="subb-form" style="display: none"> <p>' + settings.text + '</p> <form id="mc-embedded-subbscribe-form" method="post" action="' + settings.url + '"> <div class="subbscribe-alert subbscribe-error" style="display: none">Oops! Check your details and try again.</div> <div class="subbscribe-alert subbscribe-success" style="display: none">Thanks! Check your email for confirmation.</div> <div class="text-input"> ' + nameInput + ' </div> <div class="text-input"> ' + emailInput + ' </div> <button class="subb-button submit-form" type="submit" style="width: 100%; margin-bottom: 10px;">Subscribe</button></form> <div class="footer">Powered by <a href="http://www.subbscribe.com" target="_blank">Subbscribe.com</a></div> </div> </div> </div>';
+        // HTML
+        var html = '<div id="subbscribe" style="display: none"> <div class="subb-title">' + settings.title + ' <img class="close-x" src="https://s3-ap-southeast-2.amazonaws.com/subbscribe/img/close.svg" />  </div> <div class="subb-body"> ';
+        if (!settings.no_nonsense) {
+            html += '<div class="subb-hidden"><div class="subb-thumbnail"><img style="width: 40px; height: 40px;" src="' + settings.thumbnail + '" /></div><div class="subb-hidden">  <div class="subb-site"> &nbsp;' + settings.name + ' </div><button class="subb-button show-form">Subscribe</button> </div></div>';
+            html += '<div class="subb-form" style="display: none">';
+        } else {
+            html += '<div class="subb-form">';
+        }
 
-        if(getCookie('subbscribe-hidden') != 1) {
+        html += '<p>' + settings.text + '</p>  <form id="mc-embedded-subbscribe-form" method="post" action="' + settings.url + '"><div class="subbscribe-alert subbscribe-error" style="display: none">' + settings.error + '</div>';
+        if (!settings.send_to_signup) {
+            html += '<div class="subbscribe-alert subbscribe-success" style="display: none">' + settings.thanks + '</div>';
+        }
+        html += '<div class="text-input"> ' + nameInput + ' </div> <div class="text-input"> ' + emailInput + ' </div><button class="subb-button submit-form" type="submit" style="width: 100%; margin-bottom: 10px;">' + settings.button + '</button></form>';
+        if (settings.footer) {
+            html += '<div class="footer">Powered by <a href="http://www.subbscribe.com" target="_blank">Subbscribe.com</a></div>';
+        }
+        html += '</div> </div> </div>';
+
+        if (getCookie('subbscribe-hidden') != 1) {
 
             this.append(html);
 
-             setTimeout(function(){
+            setTimeout(function() {
 
-               $('#subbscribe').css('display', 'block');
-               $('#subbscribe').css('width', $('.subb-site').width() + 200 );
-               $('#subbscribe').addClass('animated slideInRight');
+                $('#subbscribe').css('display', 'block');
+                $('#subbscribe').css('width', $('.subb-hidden').width() +100);
+                $('#subbscribe').addClass('animated slideInRight');
 
-             }, settings.delay * 1000);
+            }, settings.delay * 1000);
 
         }
 
@@ -109,10 +128,10 @@
         ===============================================================================
         */
 
-        $('#subbscribe .close-x').click(function(){
+        $('#subbscribe .close-x').click(function() {
 
             $('#subbscribe').toggleClass('slideInRight fadeOut');
-            $('#subbscribe').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+            $('#subbscribe').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
 
                 $('#subbscribe').remove();
                 setCookie('subbscribe-hidden', 1, 1); // Hide for a day
@@ -123,108 +142,112 @@
 
         });
 
-        $('#subbscribe .show-form').click(function(){
+        $('#subbscribe .show-form').click(function() {
 
             $('#subbscribe .subb-hidden').hide();
             $('#subbscribe .subb-form').show();
 
         });
 
-        $('#mc-embedded-subbscribe-form').submit(function(e){
+        $('#mc-embedded-subbscribe-form').submit(function(e) {
 
-           e.preventDefault();
+            e.preventDefault();
 
-           if( formValidation() ) {
+            if (formValidation()) {
 
                 $('#subbscribe .subbscribe-error').slideUp();
                 $('#subbscribe .submit-form').attr('disabled', 'disabled');
 
-                $.ajax({
+                if (settings.send_to_signup) {
+                    window.open('https:' + settings.url+ '&' + $(this).serialize());
+                    onSuccess();
+                } else {
+                    $.ajax({
 
-                    url: _action,
-                    type: 'post',
-                    data: $(this).serialize(),
-                    dataType: 'json',
-                    contentType: "application/json; charset=utf-8",
+                        url: _action,
+                        type: 'post',
+                        data: $(this).serialize(),
+                        dataType: 'json',
+                        contentType: "application/json; charset=utf-8",
 
-                    success: function (data) {
+                        success: function(data) {
 
-                       if ( isError(data) ) {
+                            if (isError(data)) {
+                                console.log('Subbscribe Error: submission failed.');
+                            } else {
+                                //SUCCESS
+                                onSuccess();
+                            }
+                        }
 
-                           	console.log('Subbscribe Error: submission failed.');
+                    });
+                }
 
-                       }
-		       else {
-
-                            //SUCCESS
-                            resetFormFields()
-                            $('.subbscribe-success').slideDown();
-
-                            setTimeout(function(){ $('#subbscribe').addClass('animated fadeOut'); }, 2000);
-                            $('#subbscribe').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-
-                                $('#subbscribe').remove();
-                                setCookie('subbscribe-hidden', 1, 365); // Hide for a year
-
-                                if(typeof settings.onSubbscribe === 'function'){
-                                    settings.onSubbscribe.call();
-                                }
-
-                            });
-
-                       }
-                    }
-
-                });
-
-           } else {
+            } else {
 
                 $('#subbscribe .subbscribe-error').slideDown();
 
-           }
+            }
 
         });
 
+        function onSuccess() {
+            resetFormFields()
+            $('.subbscribe-success').slideDown();
+
+            setTimeout(function() {
+                $('#subbscribe').addClass('animated fadeOut');
+            }, 2000);
+            $('#subbscribe').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+
+                $('#subbscribe').remove();
+                setCookie('subbscribe-hidden', 1, 365); // Hide for a year
+
+                if (typeof settings.onSubbscribe === 'function') {
+                    settings.onSubbscribe.call();
+                }
+
+            });
+        }
         /*
         ===============================================================================
           Helpers
         ===============================================================================
         */
 
-	function isError(data) {
+        function isError(data) {
 
-		console.log( data );
+            console.log(data);
 
-		if ( settings.list == 'MailChimp' ) {
+            if (settings.list == 'MailChimp') {
 
-			if( data['result'] != "success" ) {
+                if (data['result'] != "success") {
 
-				return true;
+                    return true;
 
-			}
+                }
 
-			return false;
+                return false;
 
-		}
-		else if ( settings.list == 'CampaignMonitor' ) {
+            } else if (settings.list == 'CampaignMonitor') {
 
-			if( data.Status === 400 ) {
+                if (data.Status === 400) {
 
-				return true;
+                    return true;
 
-			}
+                }
 
-			return false;
+                return false;
 
-		}
+            }
 
-		return true;
+            return true;
 
-	}
+        }
 
         function resetFormFields() {
 
-            $('#subbscribe input').each(function(){
+            $('#subbscribe input').each(function() {
                 $(this).val('');
             });
 
@@ -239,16 +262,16 @@
 
         function formValidation() {
 
-            var valid   = true;
-            var name    = $('#subb-NAME');
-            var email   = $('#subb-EMAIL');
+            var valid = true;
+            var name = $('#subb-NAME');
+            var email = $('#subb-EMAIL');
 
-	    if( !settings.emailonly ) {
+            if (!settings.emailonly) {
 
-		if( name.val().length < 2 ) {
+                if (name.val().length < 2) {
 
                     valid = false;
-    	            name.addClass('error');
+                    name.addClass('error');
 
                 } else {
 
@@ -256,9 +279,9 @@
 
                 }
 
-	    }
+            }
 
-            if ( !validateEmail( email.val() ) ) {
+            if (!validateEmail(email.val())) {
 
                 valid = false;
                 email.addClass('error');
@@ -276,8 +299,8 @@
         function setCookie(cname, cvalue, exdays) {
 
             var d = new Date();
-            d.setTime(d.getTime() + (exdays*24*60*60*1000));
-            var expires = "expires="+d.toUTCString();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            var expires = "expires=" + d.toUTCString();
             document.cookie = cname + "=" + cvalue + "; " + expires + "; path=/";
 
         }
@@ -286,10 +309,10 @@
 
             var name = cname + "=";
             var ca = document.cookie.split(';');
-            for(var i=0; i<ca.length; i++) {
+            for (var i = 0; i < ca.length; i++) {
                 var c = ca[i];
-                while (c.charAt(0)==' ') c = c.substring(1);
-                if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+                while (c.charAt(0) == ' ') c = c.substring(1);
+                if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
             }
 
             return "";

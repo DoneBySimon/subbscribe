@@ -6,7 +6,7 @@
 #subbscribe {
   padding: 0;
   margin: 0;
-  color: #7b8993;
+  color: #7B8993;
   position: fixed;
   right: 15px;
   bottom: 15px;
@@ -17,12 +17,6 @@
   font-size: 17px;
   font-size: 15px;
   box-shadow: 0 1px 2px #e9e9e9;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  -moz-background-clip: padding;
-  -webkit-background-clip: padding-box;
-  background-clip: padding-box;
   background-color: #fff;
   z-index: 100001;
   -webkit-transform: translate3d(0, 0, 0);
@@ -30,14 +24,11 @@
   -webkit-transform: translateZ(0);
 }
 #subbscribe a {
-  color: #7b8993;
+  color: #7B8993;
   text-decoration: underline;
 }
-#subbscribe a:hover,
-#subbscribe a:focus,
-#subbscribe a:visited,
-#subbscribe a:active {
-  color: #7b8993;
+#subbscribe a:hover, #subbscribe a:focus, #subbscribe a:visited, #subbscribe a:active {
+  color: #7B8993;
 }
 #subbscribe .subbscribe-alert {
   font-size: 12px;
@@ -45,16 +36,10 @@
   margin-bottom: 10px;
 }
 #subbscribe .subbscribe-error {
-  color: #fd392b;
+  color: #FD392B;
 }
 #subbscribe .subbscribe-success {
-  color: #9fce70;
-}
-#subbscribe .animate {
-  -moz-transition: all 0.2s ease-in;
-  -webkit-transition: all 0.2s ease-in;
-  -o-transition: all 0.2s ease-in;
-  transition: all 0.2s ease-in;
+  color: #9FCE70;
 }
 #subbscribe .subb-title {
   padding: 12px 12px 10px 12px;
@@ -65,7 +50,7 @@
 #subbscribe .subb-title .close-x {
   float: right;
   margin-top: 5px;
-  color: #dcdcdc;
+  color: gainsboro;
   cursor: pointer;
 }
 #subbscribe .subb-body {
@@ -132,7 +117,7 @@
   font-size: 13px;
   font-weight: 500 !important;
   width: 100%;
-  color: #7b8993;
+  color: #7B8993;
 }
 #subbscribe .subb-body .subb-form input {
   text-indent: 8px;
@@ -144,7 +129,7 @@
   -moz-background-clip: padding;
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
-  border: 1px solid #dcdcdc;
+  border: 1px solid gainsboro;
   padding: 7px;
   font-size: 12px;
   display: block;
@@ -153,7 +138,7 @@
   padding: 5px 0;
 }
 #subbscribe .subb-body .subb-form input.error {
-  border-color: #fd392b;
+  border-color: #FD392B;
 }
 #subbscribe .subb-body .subb-form input:focus {
   outline: 0 none;
@@ -168,6 +153,7 @@
   font-size: 10px;
   text-align: right;
 }
+
 /*
 ===============================================================================
   Animations
@@ -179,6 +165,7 @@
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
 }
+
 @-webkit-keyframes slideInRight {
   0% {
     -webkit-transform: translateX(100%);
@@ -207,6 +194,7 @@
   -webkit-animation-name: slideInRight;
   animation-name: slideInRight;
 }
+
 @-webkit-keyframes fadeOut {
   0% {
     opacity: 1;
@@ -227,6 +215,7 @@
   -webkit-animation-name: fadeOut;
   animation-name: fadeOut;
 }
+
 /*
 ===============================================================================
   Media queries
@@ -234,6 +223,10 @@
 */
 @media (max-width: 550px) {
   #subbscribe {
-    width: 92%;
+    width: -webkit-calc(100% - 8px);
+    width: -moz-calc(100% - 8px);
+    width: calc(100% - 8px);
   }
 }
+
+/*# sourceMappingURL=subbscribe.css.map */
