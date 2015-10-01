@@ -1,0 +1,23 @@
+{
+  "name": "subbscribe",
+  "main": "subbscribe.js",
+  "version": "0.0.1",
+  "homepage": "https://github.com/DoneBySimon/subbscribe",
+  "authors": [
+    "Simon Vanherweghe <simon.vanherweghe@gmail.com>"
+  ],
+  "description": "Subbscribe with some extra features",
+  "keywords": [
+    "subbscribe",
+    "mailchimp",
+    "campaignmonitor"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
