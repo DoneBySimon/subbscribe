@@ -3,14 +3,14 @@ https://github.com/shlomnissan/subbscribe
 
  - - -
  
- #### Changes
+#### Changes
 
 * Extra options
 * Sass instead of less
 
  - - -
 
- #### Extra options
+#### Extra options
 
 `button` - Set button label
 `thanks` - Set thanks message
