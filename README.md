@@ -18,7 +18,7 @@ https://github.com/shlomnissan/subbscribe
 
 `error` - Set error message
 
-'no_nonsense' - go straight to the form (true/false)
+`no_nonsense` - go straight to the form (true/false)
 
 `footer` - show the footer (true/false)
 
