@@ -2,6 +2,12 @@
 https://github.com/shlomnissan/subbscribe
 
  - - -
+ #### Changes
+
+* Extra options
+* Sass instead of less
+
+ - - -
 
  #### Extra options
 
